@@ -120,9 +120,7 @@ jobs:
           AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
         run: |
           dvc remote modify azure connection_string "$AZURE_STORAGE_CONNECTION_STRING"
-          dvc pull model.pkl data/processed/preprocessor.pkl \
-                   data/processed/outlier_bounds.json \
-                   data/processed/selected_features.json
+          dvc pull
 
       - name: Build Docker image
         run: docker build -t house-price-api:latest .
