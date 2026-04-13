@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/megharathi/Desktop/hpp_12_04_26/mlruns/107186897203021464/339362485f28403898d1c1922ed11e7a/artifacts
+end_time: 1776080722609
+entry_point_name: ''
+experiment_id: '107186897203021464'
+lifecycle_stage: active
+run_id: 339362485f28403898d1c1922ed11e7a
+run_name: ElasticNet
+run_uuid: 339362485f28403898d1c1922ed11e7a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776080713782
+status: 3
+tags: []
+user_id: megharathi

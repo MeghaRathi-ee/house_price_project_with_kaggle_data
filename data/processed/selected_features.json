@@ -1,0 +1,17 @@
+{
+    "features": [
+        "Area",
+        "Bedrooms",
+        "Bathrooms",
+        "Floors",
+        "YearBuilt",
+        "Location",
+        "Condition",
+        "Garage",
+        "HouseAge",
+        "TotalRooms",
+        "AreaPerRoom",
+        "IsNew"
+    ],
+    "dropped": []
+}

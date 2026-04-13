@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1776080754935
+current_stage: Staging
+description: null
+last_updated_timestamp: 1776080754946
+name: house_price_model
+run_id: d27abc5a9da24d7386c09b15728c6f0b
+run_link: null
+source: file:///Users/megharathi/Desktop/hpp_12_04_26/mlruns/107186897203021464/d27abc5a9da24d7386c09b15728c6f0b/artifacts/model
+status: READY
+status_message: null
+storage_location: file:///Users/megharathi/Desktop/hpp_12_04_26/mlruns/107186897203021464/d27abc5a9da24d7386c09b15728c6f0b/artifacts/model
+user_id: null
+version: 1

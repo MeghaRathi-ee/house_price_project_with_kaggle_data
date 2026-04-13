@@ -16,11 +16,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.10"
 
@@ -39,7 +37,6 @@ jobs:
       - name: Run tests
         run: pytest tests/ -v --tb=short
 
-
   # ─────────────────────────────────────────
   # JOB 2: Run ML Pipeline with DVC
   # ─────────────────────────────────────────
@@ -50,38 +47,31 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.10"
 
-      - name: Install DVC with pinned dependencies
+      - name: Install dependencies (single source of truth)
         run: |
           pip install --upgrade pip
-          # Use constraints file to lock pathspec==1.0.4
-          # pip will respect this constraint even when installing other packages
-          pip install 'dvc[azure]==2.58.2' -c constraints.txt
-          pip install pathspec==1.0.4 --force-reinstall --no-deps
-          python -c "import pathspec; print('pathspec:', pathspec.__version__)"
-          dvc --version
+          pip install -r requirements.txt
 
-      - name: Install project dependencies
+      - name: Verify installations
         run: |
-          pip install pandas numpy scikit-learn pyyaml \
-                      mlflow fastapi uvicorn \
-                      xgboost lightgbm evidently
+          python --version
+          dvc --version
+          mlflow --version
 
       - name: Configure DVC Azure remote
         run: |
           dvc remote modify azure connection_string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}"
 
-      - name: Pull data from Azure
+      - name: Pull data
         run: dvc pull
 
-      - name: Run DVC pipeline
+      - name: Run pipeline
         run: dvc repro
 
       - name: Check metrics
@@ -90,25 +80,22 @@ jobs:
           import json
           with open("data/reports/metrics.json") as f:
               metrics = json.load(f)
-          print(f"R2   : {metrics['r2']}")
-          print(f"RMSE : {metrics['rmse']}")
-          print(f"MAPE : {metrics['mape']}")
-          print("Metrics check passed")
+          print(metrics)
+          assert metrics["r2"] > 0.5, "Model performance too low!"
           PYEOF
 
-      - name: Push to Azure DVC remote
+      - name: Push artifacts
         run: dvc push
 
-      - name: Commit dvc.lock and metrics
+      - name: Commit updated files
         run: |
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
-          git add dvc.lock data/reports/metrics.json data/reports/model_comparison.json || true
-          git diff --staged --quiet || git commit -m "ci: update dvc.lock and metrics [skip ci]"
+          git add dvc.lock data/reports/*.json || true
+          git diff --staged --quiet || git commit -m "ci: update artifacts [skip ci]"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
 
   # ─────────────────────────────────────────
   # JOB 3: Build Docker image
@@ -120,33 +107,14 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
-
-      - name: Install DVC
-        run: |
-          pip install pathspec==1.0.4
-          pip install scmrepo==1.4.1
-          pip install 'dvc[azure]'==2.58.2
-
-      - name: Pull model artifacts
-        run: |
-          dvc remote modify azure connection_string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}"
-          dvc pull model.pkl data/processed/preprocessor.pkl \
-                   data/processed/outlier_bounds.json \
-                   data/processed/selected_features.json
+      - uses: actions/checkout@v3
 
       - name: Build Docker image
         run: |
           docker build -t house-price-api:${{ github.sha }} .
           docker tag house-price-api:${{ github.sha }} house-price-api:latest
 
-      - name: Test Docker image
+      - name: Test Docker container
         run: |
           docker run -d -p 8000:8000 --name test-api house-price-api:latest
           sleep 10
