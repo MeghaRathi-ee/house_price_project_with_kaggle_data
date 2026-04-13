@@ -1,0 +1,22 @@
+{
+    "Area": {
+        "lower": -1721.75,
+        "upper": 7232.25
+    },
+    "Bedrooms": {
+        "lower": -1.0,
+        "upper": 7.0
+    },
+    "Bathrooms": {
+        "lower": -1.0,
+        "upper": 7.0
+    },
+    "Floors": {
+        "lower": -2.0,
+        "upper": 6.0
+    },
+    "YearBuilt": {
+        "lower": 1832.5,
+        "upper": 2092.5
+    }
+}

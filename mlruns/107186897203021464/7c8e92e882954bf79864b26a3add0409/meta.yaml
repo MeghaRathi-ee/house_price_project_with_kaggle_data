@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/megharathi/Desktop/hpp_12_04_26/mlruns/107186897203021464/7c8e92e882954bf79864b26a3add0409/artifacts
+end_time: 1776080754722
+entry_point_name: ''
+experiment_id: '107186897203021464'
+lifecycle_stage: active
+run_id: 7c8e92e882954bf79864b26a3add0409
+run_name: LightGBM
+run_uuid: 7c8e92e882954bf79864b26a3add0409
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776080747002
+status: 3
+tags: []
+user_id: megharathi

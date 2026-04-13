@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/megharathi/Desktop/hpp_12_04_26/mlruns/107186897203021464/7cf8f50780b24fcf8c7ebfaab3e89ebd/artifacts
+end_time: 1776080746997
+entry_point_name: ''
+experiment_id: '107186897203021464'
+lifecycle_stage: active
+run_id: 7cf8f50780b24fcf8c7ebfaab3e89ebd
+run_name: XGBoost
+run_uuid: 7cf8f50780b24fcf8c7ebfaab3e89ebd
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776080738374
+status: 3
+tags: []
+user_id: megharathi
