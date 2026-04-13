@@ -58,8 +58,10 @@ jobs:
         run: pip install azure-storage-blob azure-identity
 
       - name: Configure DVC remote
+        env:
+          AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
         run: |
-          dvc remote modify azure connection_string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}"
+          dvc remote modify azure connection_string "$AZURE_STORAGE_CONNECTION_STRING"
 
       - name: Pull data
         run: dvc pull
@@ -107,8 +109,10 @@ jobs:
         run: pip install azure-storage-blob azure-identity
 
       - name: Pull model artifacts
+        env:
+          AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
         run: |
-          dvc remote modify azure connection_string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}"
+          dvc remote modify azure connection_string "$AZURE_STORAGE_CONNECTION_STRING"
           dvc pull model.pkl data/processed/preprocessor.pkl \
                    data/processed/outlier_bounds.json \
                    data/processed/selected_features.json
