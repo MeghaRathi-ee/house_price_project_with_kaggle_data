@@ -89,15 +89,9 @@ jobs:
       - name: Push to DVC remote
         run: dvc push
 
-      - name: Commit updated files
+      - name: Show metrics
         run: |
-          git config user.email "actions@github.com"
-          git config user.name "GitHub Actions"
-          git add dvc.lock data/reports/metrics.json data/reports/model_comparison.json || true
-          git diff --staged --quiet || git commit -m "ci: update artifacts [skip ci]"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          cat data/reports/metrics.json
 
 
   docker:
